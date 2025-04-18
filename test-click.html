@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Theme Toggle Click</title>
+  <link rel="stylesheet" href="styles.refactored.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { padding-top: 100px; text-align: center; }
+    .theme-toggle { margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="theme-toggle">
+    <i class="fas fa-moon"></i>
+  </div>
+  <p id="result">Click the button above. If this text changes, the button is clickable.</p>
+  <script>
+    document.querySelector('.theme-toggle').addEventListener('click', function() {
+      document.getElementById('result').textContent = 'THE BUTTON IS CLICKABLE!';
+      this.style.background = '#d1ffd1';
+    });
+  </script>
+</body>
+</html>

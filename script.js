@@ -1,5 +1,8 @@
+console.log('SCRIPT LOADED');
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Theme toggle element:', document.querySelector('.theme-toggle'));
+
     // Initialize GSAP and ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
     
@@ -8,35 +11,36 @@ document.addEventListener('DOMContentLoaded', function() {
     const cursorFollower = document.querySelector('.cursor-follower');
     
     document.addEventListener('mousemove', function(e) {
-        gsap.to(cursor, {
-            x: e.clientX,
-            y: e.clientY,
-            duration: 0.1
-        });
-        
-        gsap.to(cursorFollower, {
-            x: e.clientX,
-            y: e.clientY,
-            duration: 0.3
-        });
+        if (cursor && cursorFollower) {
+            gsap.to(cursor, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.1
+            });
+            gsap.to(cursorFollower, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.3
+            });
+        }
     });
     
     // Cursor hover effect for clickable elements
     const clickables = document.querySelectorAll('a, button, .project-card, .skill-tag, .social-link');
-    
-    clickables.forEach(element => {
-        element.addEventListener('mouseenter', () => {
-            cursor.style.width = '30px';
-            cursor.style.height = '30px';
-            cursorFollower.style.opacity = '0';
+    if (cursor && cursorFollower) {
+        clickables.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.style.width = '30px';
+                cursor.style.height = '30px';
+                cursorFollower.style.opacity = '0';
+            });
+            element.addEventListener('mouseleave', () => {
+                cursor.style.width = '10px';
+                cursor.style.height = '10px';
+                cursorFollower.style.opacity = '0.5';
+            });
         });
-        
-        element.addEventListener('mouseleave', () => {
-            cursor.style.width = '10px';
-            cursor.style.height = '10px';
-            cursorFollower.style.opacity = '0.5';
-        });
-    });
+    }
     
     // Header scroll effect
     const header = document.querySelector('header');
@@ -53,31 +57,32 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuBtn = document.querySelector('.menu-btn');
     const navLinks = document.querySelector('.nav-links');
     let menuOpen = false;
-    
-    menuBtn.addEventListener('click', () => {
-        if (!menuOpen) {
-            menuBtn.classList.add('open');
-            navLinks.classList.add('open');
-            menuOpen = true;
-        } else {
-            menuBtn.classList.remove('open');
-            navLinks.classList.remove('open');
-            menuOpen = false;
-        }
-    });
-    
-    // Close mobile menu when clicking on a link
-    const navItems = document.querySelectorAll('.nav-links a');
-    
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            if (menuOpen) {
+    // WRAP ALL MENU LOGIC IN THIS BLOCK
+    if (menuBtn && navLinks) {
+        menuBtn.addEventListener('click', () => {
+            if (!menuOpen) {
+                menuBtn.classList.add('open');
+                navLinks.classList.add('open');
+                menuOpen = true;
+            } else {
                 menuBtn.classList.remove('open');
                 navLinks.classList.remove('open');
                 menuOpen = false;
             }
         });
-    });
+        // Close mobile menu when clicking on a link
+        const navItems = document.querySelectorAll('.nav-links a');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (menuOpen) {
+                    menuBtn.classList.remove('open');
+                    navLinks.classList.remove('open');
+                    menuOpen = false;
+                }
+            });
+        });
+    }
+
     
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -98,26 +103,25 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Active navigation link based on scroll position
     const sections = document.querySelectorAll('section');
-    
-    window.addEventListener('scroll', () => {
-        let current = '';
-        
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            
-            if (pageYOffset >= sectionTop - 200) {
-                current = section.getAttribute('id');
-            }
+    const navItems = document.querySelectorAll('.nav-links a');
+    if (navItems && navItems.length > 0) {
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === `#${current}`) {
+                    item.classList.add('active');
+                }
+            });
         });
-        
-        navItems.forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('href') === `#${current}`) {
-                item.classList.add('active');
-            }
-        });
-    });
+    }
     
     // Dark mode toggle
     const themeToggle = document.querySelector('.theme-toggle');
@@ -131,20 +135,28 @@ document.addEventListener('DOMContentLoaded', function() {
     if (currentTheme === 'dark') {
         body.classList.add('dark-mode');
         themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    } else {
+        body.classList.remove('dark-mode');
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
     }
     
-    themeToggle.addEventListener('click', () => {
-        body.classList.toggle('dark-mode');
-        
-        // Update icon
-        if (body.classList.contains('dark-mode')) {
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-            localStorage.setItem('theme', 'dark');
-        } else {
-            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-            localStorage.setItem('theme', 'light');
-        }
-    });
+    // Use event delegation to ensure theme toggle always works
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function(e) {
+            console.log('Theme toggle clicked');
+            e.stopPropagation();
+            body.classList.toggle('dark-mode');
+
+            // Update icon
+            if (body.classList.contains('dark-mode')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    }
     
     // Project filtering
     const filterBtns = document.querySelectorAll('.filter-btn');
@@ -212,47 +224,55 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // GSAP Animations
     // Hero section animations
-    gsap.from('.hero-content h1', {
-        opacity: 0,
-        y: 50,
-        duration: 1,
-        delay: 0.2
-    });
+    if (document.querySelector('.hero-left h1')) {
+        gsap.from('.hero-left h1', {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            delay: 0.2
+        });
+    }
+    if (document.querySelector('.subtitle')) {
+        gsap.from('.subtitle', {
+            opacity: 0,
+            y: 30,
+            duration: 1,
+            delay: 0.4
+        });
+    }
+    if (document.querySelector('.hero-description')) {
+        gsap.from('.hero-description', {
+            opacity: 0,
+            y: 30,
+            duration: 1,
+            delay: 0.6
+        });
+    }
+    if (document.querySelector('.cta-buttons')) {
+        gsap.from('.cta-buttons', {
+            opacity: 0,
+            y: 30,
+            duration: 1,
+            delay: 0.8
+        });
+    }
     
-    gsap.from('.subtitle', {
-        opacity: 0,
-        y: 30,
-        duration: 1,
-        delay: 0.4
-    });
-    
-    gsap.from('.hero-description', {
-        opacity: 0,
-        y: 30,
-        duration: 1,
-        delay: 0.6
-    });
-    
-    gsap.from('.cta-buttons', {
-        opacity: 0,
-        y: 30,
-        duration: 1,
-        delay: 0.8
-    });
-    
-    gsap.from('.hero-image', {
-        opacity: 0,
-        x: 50,
-        duration: 1,
-        delay: 0.5
-    });
-    
-    gsap.from('.scroll-indicator', {
-        opacity: 0,
-        y: -20,
-        duration: 1,
-        delay: 1.2
-    });
+    if (document.querySelector('.hero-right')) {
+        gsap.from('.hero-right', {
+            opacity: 0,
+            x: 50,
+            duration: 1,
+            delay: 0.5
+        });
+    }
+    if (document.querySelector('.scroll-indicator')) {
+        gsap.from('.scroll-indicator', {
+            opacity: 0,
+            y: -20,
+            duration: 1,
+            delay: 1.2
+        });
+    }
     
     // Scroll animations for sections
     gsap.utils.toArray('.section-header').forEach(header => {
@@ -267,83 +287,95 @@ document.addEventListener('DOMContentLoaded', function() {
             duration: 1
         });
     });
-    
+
     // Project cards animation
     gsap.utils.toArray('.project-card').forEach((card, i) => {
-        gsap.from(card, {
+        if (card) {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                },
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                delay: i * 0.1
+            });
+        }
+    });
+
+    // About section animations
+    if (document.querySelector('.about-text')) {
+        gsap.from('.about-text', {
             scrollTrigger: {
-                trigger: card,
-                start: 'top 85%',
+                trigger: '.about-text',
+                start: 'top 80%',
+                toggleActions: 'play none none none'
+            },
+            opacity: 0,
+            x: -50,
+            duration: 1
+        });
+    }
+
+    if (document.querySelector('.about-image')) {
+        gsap.from('.about-image', {
+            scrollTrigger: {
+                trigger: '.about-image',
+                start: 'top 80%',
+                toggleActions: 'play none none none'
+            },
+            opacity: 0,
+            x: 50,
+            duration: 1
+        });
+    }
+
+    // Skill tags animation
+    gsap.utils.toArray('.skill-tag').forEach((tag, i) => {
+        if (tag) {
+            gsap.from(tag, {
+                scrollTrigger: {
+                    trigger: tag,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                },
+                opacity: 0,
+                y: 20,
+                duration: 0.5,
+                delay: i * 0.05
+            });
+        }
+    });
+
+    // Contact section animations
+    gsap.utils.toArray('.contact-item').forEach((item, i) => {
+        if (item) {
+            gsap.from(item, {
+                scrollTrigger: {
+                    trigger: item,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                },
+                opacity: 0,
+                x: -30,
+                duration: 0.8,
+                delay: i * 0.1
+            });
+        }
+    });
+
+    if (document.querySelector('.contact-form')) {
+        gsap.from('.contact-form', {
+            scrollTrigger: {
+                trigger: '.contact-form',
+                start: 'top 80%',
                 toggleActions: 'play none none none'
             },
             opacity: 0,
             y: 50,
-            duration: 0.8,
-            delay: i * 0.1
+            duration: 1
         });
-    });
-    
-    // About section animations
-    gsap.from('.about-text', {
-        scrollTrigger: {
-            trigger: '.about-text',
-            start: 'top 80%',
-            toggleActions: 'play none none none'
-        },
-        opacity: 0,
-        x: -50,
-        duration: 1
-    });
-    
-    gsap.from('.about-image', {
-        scrollTrigger: {
-            trigger: '.about-image',
-            start: 'top 80%',
-            toggleActions: 'play none none none'
-        },
-        opacity: 0,
-        x: 50,
-        duration: 1
-    });
-    
-    // Skill tags animation
-    gsap.utils.toArray('.skill-tag').forEach((tag, i) => {
-        gsap.from(tag, {
-            scrollTrigger: {
-                trigger: tag,
-                start: 'top 85%',
-                toggleActions: 'play none none none'
-            },
-            opacity: 0,
-            y: 20,
-            duration: 0.5,
-            delay: i * 0.05
-        });
-    });
-    
-    // Contact section animations
-    gsap.utils.toArray('.contact-item').forEach((item, i) => {
-        gsap.from(item, {
-            scrollTrigger: {
-                trigger: item,
-                start: 'top 85%',
-                toggleActions: 'play none none none'
-            },
-            opacity: 0,
-            x: -30,
-            duration: 0.8,
-            delay: i * 0.1
-        });
-    });
-    
-    gsap.from('.contact-form', {
-        scrollTrigger: {
-            trigger: '.contact-form',
-            start: 'top 80%',
-            toggleActions: 'play none none none'
-        },
-        opacity: 0,
-        y: 50,
-        duration: 1
-    });
+    }
 });

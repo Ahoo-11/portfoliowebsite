@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ahoo | Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.refactored.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,41 +16,25 @@
 
     <header>
         <nav>
-            <div class="logo">Ahoo</div>
-            <ul class="nav-links">
-                <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+            
             <div class="theme-toggle">
-                <i class="fas fa-moon"></i>
-            </div>
-            <div class="menu-btn">
-                <div class="menu-btn__burger"></div>
-            </div>
-        </nav>
+    <i class="fas fa-moon"></i>
+</div>            </nav>
     </header>
 
     <main>
         <section id="home" class="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <h1 class="glitch" data-text="Hello, I'm Ahoo">Hello, I'm Ahoo</h1>
-                    <p class="subtitle">Creative Developer & Digital Innovator</p>
-                    <div class="hero-description">
-                        <p>I build exceptional digital experiences with cutting-edge technology.</p>
-                    </div>
-                    <div class="cta-buttons">
-                        <a href="#projects" class="btn primary">View Projects</a>
-                        <a href="#contact" class="btn secondary">Get In Touch</a>
-                    </div>
-                </div>
-                <div class="hero-image">
-                    <div class="blob"></div>
-                    <div class="profile-img"></div>
-                </div>
-            </div>
+  <div class="hero-content-center">
+        <h1 class="glitch" data-text="Hello, I'm Ahoo">Hello, I'm Ahoo</h1>
+        <p class="subtitle">Creative Developer & Digital Innovator</p>
+        <div class="hero-description">
+          <p>I build exceptional digital experiences with cutting-edge technology.</p>
+        </div>
+        <div class="cta-buttons">
+          <a href="#projects" class="btn primary">View Projects</a>
+
+        </div>
+      </div>
             <div class="scroll-indicator">
                 <div class="mouse">
                     <div class="wheel"></div>
@@ -65,12 +49,24 @@
         </section>
 
         <section id="projects" class="projects">
+          <div class="projects-main-headline">
+            <h1>Featured Projects</h1>
+          </div>
             <div class="container">
                 <div class="section-header">
                     <h2>My Projects</h2>
                     <p>Explore my latest work and creative endeavors</p>
                 </div>
                 <div class="project-filter">
+                </div>
+                <div class="project-headings-row">
+                  <h4>Web App</h4>
+                  <h4>Mobile App</h4>
+                  <h4>UI Kit</h4>
+                  <h4>Portfolio</h4>
+                  <h4>Analytics</h4>
+                  <h4>Music App</h4>
+                </div>
                     <button class="filter-btn active" data-filter="all">All</button>
                     <button class="filter-btn" data-filter="web">Web</button>
                     <button class="filter-btn" data-filter="mobile">Mobile</button>
@@ -195,106 +191,15 @@
             </div>
         </section>
 
-        <section id="about" class="about">
-            <div class="container">
-                <div class="section-header">
-                    <h2>About Me</h2>
-                    <p>Get to know me and my creative journey</p>
-                </div>
-                <div class="about-content">
-                    <div class="about-text">
-                        <p>Hello! I'm Ahoo, a passionate developer focused on creating vibrant digital experiences. With a keen eye for design and a love for clean code, I build applications that are both functional and aesthetically pleasing.</p>
-                        <p>My journey in tech began with a fascination for how digital products can enhance our daily lives. Since then, I've been on a mission to create meaningful projects that resonate with users on an emotional level.</p>
-                        <div class="skills">
-                            <h3>My Skills</h3>
-                            <div class="skill-tags">
-                                <span class="skill-tag">HTML5</span>
-                                <span class="skill-tag">CSS3</span>
-                                <span class="skill-tag">JavaScript</span>
-                                <span class="skill-tag">React</span>
-                                <span class="skill-tag">Node.js</span>
-                                <span class="skill-tag">Flutter</span>
-                                <span class="skill-tag">UI/UX Design</span>
-                                <span class="skill-tag">Responsive Design</span>
-                                <span class="skill-tag">Animation</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="about-image">
-                        <div class="image-container">
-                            <!-- Placeholder for about image -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <section id="contact" class="contact">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Get In Touch</h2>
-                    <p>Let's discuss your next project</p>
-                </div>
-                <div class="contact-content">
-                    <div class="contact-info">
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <div>
-                                <h3>Email</h3>
-                                <p>hello@ahoo.dev</p>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <div>
-                                <h3>Location</h3>
-                                <p>San Francisco, CA</p>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-share-alt"></i>
-                            <div>
-                                <h3>Social</h3>
-                                <div class="social-links">
-                                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-                                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                                    <a href="#" class="social-link"><i class="fab fa-dribbble"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="contact-form">
-                        <form id="contactForm">
-                            <div class="form-group">
-                                <input type="text" id="name" name="name" placeholder="Your Name" required>
-                                <label for="name">Your Name</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" id="email" name="email" placeholder="Your Email" required>
-                                <label for="email">Your Email</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="subject" name="subject" placeholder="Subject" required>
-                                <label for="subject">Subject</label>
-                            </div>
-                            <div class="form-group">
-                                <textarea id="message" name="message" placeholder="Your Message" required></textarea>
-                                <label for="message">Your Message</label>
-                            </div>
-                            <button type="submit" class="btn primary">Send Message</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">Ahoo</div>
-                <p>© 2023 Ahoo. All rights reserved.</p>
+                <p> 2023 Ahoo. All rights reserved.</p>
+                <p> 2023 Ahoo. All rights reserved.</p>
             </div>
         </div>
     </footer>
